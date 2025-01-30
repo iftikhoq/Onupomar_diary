@@ -1,0 +1,82 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block head_title %}Onupomar Diary{% endblock %} {% block content %}
+<div class="container mx-auto p-6">
+    <form method="GET" class="mb-4">
+        <label for="category" class="font-bold">Filter by Category:</label>
+        <select name="category" id="category" class="border p-2 rounded" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+                    {{ cat.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for book in books %}
+          <div class="bg-white p-4 shadow rounded">
+            <img src="{{book.image.url}}" alt="{{book.title}}"
+            class="w-full h-48 object-cover mb-2 rounded">
+            <h3 class="font-bold">{{book.title}}</h3>
+            <p>{{book.description}}</p>
+            <p>Price: {{book.borrowing_price}} Taka</p>
+            <a href="{% url 'bookpage' book.id %}" 
+            class="bg-blue-600 text-white px-4 py-2 mt-2 rounded inline-block">Borrow</a>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+
+  <!-- <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const books = [
+        {
+          title: "Book 1",
+          description: "A great book",
+          image:
+            "https://images.unsplash.com/photo-1577627444534-b38e16c9d796?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          price: 200,
+          category: "fiction",
+        },
+        {
+          title: "Book 2",
+          description: "Another great book",
+          image:
+            "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          price: 300,
+          category: "science",
+        },
+      ];
+
+      const booksContainer = document.getElementById("booksContainer");
+      function renderBooks(category = "all") {
+        booksContainer.innerHTML = "";
+        books
+          .filter((book) => category === "all" || book.category === category)
+          .forEach((book) => {
+            booksContainer.innerHTML += `
+                          <div class="bg-white p-4 shadow rounded">
+                              <img src="${book.image}" alt="${
+              book.title
+            }" class="w-full h-48 object-cover mb-2 rounded">
+                              <h3 class="font-bold">${book.title}</h3>
+                              <p>${book.description}</p>
+                              <p class="text-green-600">Price: ${
+                                book.price
+                              } Taka</p>
+                              <a href="book.html?title=${encodeURIComponent(
+                                book.title
+                              )}" class="bg-blue-600 text-white px-4 py-2 mt-2 rounded inline-block">View Details</a>
+                          </div>`;
+          });
+      }
+      renderBooks();
+      document
+        .getElementById("categoryFilter")
+        .addEventListener("change", (e) => renderBooks(e.target.value));
+    });
+  </script> -->
+
+{% endblock %}

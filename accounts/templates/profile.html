@@ -1,0 +1,74 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block head_title %}Onupomar Diary{% endblock %} {% block content %}
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Profile</h2>
+          
+          <div class="space-y-4 mb-8">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Name</label>
+              <p id="userName" class="mt-1 text-lg text-gray-900">{{user.first_name}} {{user.last_name}}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Email</label>
+              <p id="userEmail" class="mt-1 text-lg text-gray-900">{{user.email}}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Balance</label>
+              <p id="userBalance" class="mt-1 text-lg text-blue-600 font-semibold">{{user.account.balance}}</p>
+            </div>
+          </div>
+
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Borrowing History</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 bg-white rounded-lg shadow-md">
+              <thead class="bg-blue-100">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Borrow Date</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody id="borrowingHistory" class="bg-white divide-y divide-gray-200">
+                {% for borrow in borrows %}
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ borrow.book.title }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ borrow.borrowed_at|date:"Y-m-d H:i" }}          </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {% if borrow.returned == True %}
+                        <span class="text-green-500 font-semibold">Returned</span>
+                      {% else %}
+                        <span class="text-yellow-500 font-semibold">Borrowed</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Deposit History</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 bg-white rounded-lg shadow-md">
+              <thead class="bg-blue-100">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deposit Date</th>
+                </tr>
+              </thead>
+              <tbody id="borrowingHistory" class="bg-white divide-y divide-gray-200">
+                {% for deposit in deposits %}
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ deposit.amount }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ deposit.dep_date|date:"Y-m-d H:i" }}          </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+    {% endblock %}
